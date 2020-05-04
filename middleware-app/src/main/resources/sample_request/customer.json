@@ -1,0 +1,14 @@
+{
+  "address": {
+    "addressLine1": "1 something street",
+    "addressLine2": " next to building A",
+    "city": "Cape",
+    "postalCode": "7441",
+    "state": "WC"
+  },
+  "agreedToMarketting": true,
+  "email": "aaa@asdasd.com",
+  "firstName": "AAAAA",
+  "lastName": "BBBB",
+  "number": "0000"
+}
