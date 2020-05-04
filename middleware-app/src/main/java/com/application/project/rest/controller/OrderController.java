@@ -50,7 +50,8 @@ public class OrderController {
     @PostMapping("orders/{customerId}")
     public CustomerOrder createPost(@PathVariable String customerId, @RequestBody CustomerOrder customerOrder) throws ProjectDetailsNotFoundException {
         Customer customer = customerService.findById(Long.parseLong(customerId));
-        List<OrderItem> orderItems = new ArrayList<OrderItem>();
+        customerOrder.setCustomer(customer);
+       /* List<OrderItem> orderItems = new ArrayList<OrderItem>();
         orderItems.addAll(customerOrder.getOrderItems());
         customerOrder.setOrderItems(null);
         customerOrder.setCustomer(customer);
@@ -61,7 +62,41 @@ public class OrderController {
             orderItem.setCustomerOrder(customerOrder1);
             orderItem.setProduct(product);
         }
-        customerOrder1.setOrderItems(orderItems);
-        return customerOrderService.save(customerOrder1);
+        customerOrder1.setOrderItems(orderItems);*/
+        return customerOrderService.save(customerOrder);
+    }
+
+    @PostMapping("orderItems/{orderId}")
+    public CustomerOrder createPost(@PathVariable String orderId, @RequestBody OrderItem orderItem) throws ProjectDetailsNotFoundException {
+        CustomerOrder customerOrder = customerOrderService.findById(Long.parseLong(orderId));
+        Product product = productService.findById(Long.parseLong(orderItem.product_id));
+        //orderItem.setCustomerOrder(customerOrder);
+        orderItem.setProduct(product);
+        orderItem.setCustomerOrder(customerOrder);
+        List<OrderItem> orderItems = customerOrder.getOrderItems();
+        orderItems.add(orderItem);
+
+
+       /* List<OrderItem> orderItems = new ArrayList<OrderItem>();
+        orderItems.addAll(customerOrder.getOrderItems());
+        customerOrder.setOrderItems(null);
+        customerOrder.setCustomer(customer);
+        CustomerOrder customerOrder1 = customerOrderService.save(customerOrder);
+
+        for (OrderItem orderItem : orderItems) {
+            Product product = productService.findById(Long.parseLong(orderItem.product_id));
+            orderItem.setCustomerOrder(customerOrder1);
+            orderItem.setProduct(product);
+        }
+        customerOrder1.setOrderItems(orderItems);*/
+        return customerOrderService.save(customerOrder);
+    }
+
+    @GetMapping("orderItems/{orderId}")
+    public List<OrderItem> getOrderItemsForOrder(@PathVariable String orderId) throws ProjectDetailsNotFoundException {
+
+        CustomerOrder customerOrder =  customerOrderService.findById(Long.parseLong(orderId));
+        return customerOrder.getOrderItems();
+
     }
 }
